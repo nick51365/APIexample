@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <h1>Current Topic:</h1>
+    <h1 id="display"></h1>
+    <img src="#" /><br>
+    <button id="newImg">New Image</button><br><br>
+
+    <form id="form">
+        <label for="search">New Topic</label><br>
+        <input id="search" name="search"></input><br>
+        <button id="submit" type="submit">Submit</button>
+    </form>
+
+    <script>
+        //Initialize "searchTerm"
+        let searchTerm = "cats";
+
+        //Identify HTML elements
+        const img = document.querySelector("img");
+        const newImg = document.getElementById("newImg");
+        const submit = document.getElementById("submit");
+        const search = document.getElementById("search");
+        const display = document.getElementById("display");
+
+        //Assign event listeners
+        newImg.addEventListener("click",() => fetchImg());
+        submit.addEventListener("click",(event) => {
+            event.preventDefault();
+            searchTerm = search.value;
+            fetchImg();
+            displayTopic();
+            search.value = "";
+        });
+
+
+        //Fetch and display a new image
+        async function fetchImg(){
+            let response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=RxXvsmhjQvB9NTeqKqyYSDDGDyB0K5Ro&s=${searchTerm}`);
+            let responseJSON = await response.json();  
+            img.src = responseJSON.data.images.original.url;
+            };
+
+        //Display topic in "display"
+        function displayTopic(){
+            display.textContent = searchTerm;
+        }    
+        //Fetch image on page load
+        fetchImg();
+        displayTopic();
+    </script>
+</body>
+
+
+</html>
+
